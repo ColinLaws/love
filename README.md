@@ -94,12 +94,12 @@ be able to find these for other platforms, I'm just taking the easy route here
 and using my Linux Mint VM as my toolbox. Windows does support WSL, so that's 
 probably a fairly easy work around for Windows users.
 
-Open a terminal window and use the following command to locate the start block of your ISO:\
+Open a terminal window and use the following command to locate the start block of your ISO:
 ```bash
 fdisk -l /path/to/file/irix_file.iso
 ```
 
-In my case, I performed the command using an IRIX 5.3 iso file and received the following output:\
+In my case, I performed the command using an IRIX 5.3 iso file and received the following output:
 ```
 Disk /mnt/shared/IRIX_5.3.iso: 511.59 MiB, 536444928 bytes, 1047744 sectors
 Geometry: 255 heads, 63 sectors/track, 65 cylinders
@@ -117,13 +117,13 @@ Partition table entries are not in disk order.
 ```
 
 Take note of your sector size. If I'm not mistaken you will find
-them all to be 512 bytes. This is indicated by:\
+them all to be 512 bytes. This is indicated by:
 
 ```
 Units: sectors of 1 * 512 = 512 bytes
 ```
 
-Next, the line we're looking for in the table is (the largest part):\
+Next, the line we're looking for in the table is (the largest part):
 ```
 /mnt/shared/IRIX_5.3.iso8  60768 1047159  986392 481.6M  5 SGI sysv   
 ```
@@ -147,7 +147,7 @@ Make sure to allow network traffic across the following ports:
  - TCP 514 - Incoming
  - Any outgoing TCP connection from love.exe
 
-On Ubuntu/Mint this can be acheived easily with:\
+On Ubuntu/Mint this can be acheived easily with:
 ```bash
 sudo ufw enable
 sudo ufw allow 67
@@ -173,7 +173,7 @@ sudo ./love 192.168.1.100 LABELS.UNIX.TXT
 ```
 
 You should see lots of output about the label file being parsed, and finally
-at the end you will see:\
+at the end you will see:
 ```
 INFO: Listening for BOOTP packets
 ```
@@ -191,13 +191,13 @@ the stop for maintenance menu, or click the button when it appears. Some CRT
 monitors are sluggish, so `ESC` can help you stop the boot process and pause
 for you to take action before it shows up on the monitor.
 
-Use the option to enter the Command Monitor, and enter the following command:\
+Use the option to enter the Command Monitor, and enter the following command:
 
 ```
 unsetenv srvaddr
 ```
 
-Next, enter the following and replace <IP_ADDR> with your desired IP address for your SGI:\
+Next, enter the following and replace <IP_ADDR> with your desired IP address for your SGI:
 
 ```
 setenv netaddr <IP_ADDR>
@@ -211,7 +211,7 @@ would like to run it for instance with IRIX 5.3, you would enter `love.53.fx` in
 It is recommended to use the `6.5.30` version of `fx`, as it is the latest one.
 Keep in mind that the IP Address I am using is the IP Address of my Linux Mint VM
 which is running love. I am passing the `--x` flag to `fx.ARCS` to enter extended
-mode (recommended):\
+mode (recommended):
 
 ```
 boot -f bootp()192.168.1.60:love.6530.fx --x
@@ -313,7 +313,7 @@ After each `open` command, I am pressing enter. Load all of the following CDs:
 `open 192.168.1.60:love.65.devfound`\
 `open 192.168.1.60:love.65.devlib`\
 `open 192.168.1.60:love.65.appsjune1998`\
-`open 192.168.1.60:love.65.nfs3`\
+`open 192.168.1.60:love.65.nfs3`
 
 You may receive some scrolling prompts during this process. Use the spacebar to continue through
 these prompts.
