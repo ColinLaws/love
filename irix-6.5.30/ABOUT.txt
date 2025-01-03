@@ -1,0 +1,11 @@
+IRIX 6.5.30 (64 bits)
+=====================
+
+# uname -a
+IRIX64 DEVIRIX 6.5 07202013 IP35
+#
+
+# CC -version
+MIPSpro Compilers: Version 7.4
+#
+

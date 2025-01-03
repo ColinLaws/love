@@ -1,0 +1,144 @@
+# Fully qualified label name:
+#
+#  A fully qualified label name consists of a series of qualifiers that are
+#  collectively called "label".
+#
+#  The syntax is:
+#
+#    0     1    2            3            4            5            N
+# --------------------------------------------------------------------------------
+# love.model.bits.irix-version[.qualifier_4[.qualifier_5[.qualifier_N]]]
+#
+#  A qualifier consists of alphanumeric characters or the dot. Note, however, that
+#  all fully qualified label names must start with a qualifier called 'love',
+#  without the quotes.
+#
+# Path to distribution or file:
+#
+#  Absolute path to an IRIX distributon directory (in case of IRIX installations),
+#  or absolute path to standalone program (in case of invocation of standalone
+#  programs).
+#
+# Label name aliases:
+#
+#  A fully qualified label name can have zero or more label name aliases. These
+#  reference the same path as its corresponding fully qualified label name.
+#
+#  The syntax is:
+#
+#   label_0 [label_1 [... [label_N]]]
+#
+#   The syntax is the same as for fully qualified label names, except for the
+#   requirement of specific qualifiers. Label name aliases may include any
+#   number of qualifiers.
+#
+# Field separators:
+#
+#  Any number and combination of tabs and white space may separate fields on the
+#  same line.
+#
+# Comments:
+#
+#  Lines starting with a # (pound sign) are ignored.
+
+
+# ================================================================================================================
+# IRIX INSTALLATION
+# ================================================================================================================
+# ----------------------------  ----------------------------					------------------
+# Fully qualified label name    Path to distribution        					Label name aliases
+# ----------------------------  ----------------------------					------------------
+
+# Base release IRIX 5.3
+love.all.32.53			\\server\IRIX\5.3\dist						love.53
+
+# Base release IRIX 6.0
+love.all.3264.60		\\server\IRIX\6.0\dist						love.60
+
+# Base release IRIX 6.1
+love.all.3264.61		\\server\IRIX\6.1\dist						love.61
+
+# Base release IRIX 6.2
+love.all.3264.62		\\server\IRIX\6.2\dist						love.62
+
+# Base release IRIX 6.3
+love.all.3264.63		\\server\IRIX\6.3\dist						love.63
+
+# Base release IRIX 6.4
+love.all.3264.64		\\server\IRIX\6.4\dist						love.64
+
+# Base release IRIX 6.5 (Windows paths)
+love.all.3264.65.found1		\\server\IRIX\6.5\IRIX_6_5_Foundation_1\dist			love.65.found1
+love.all.3264.65.found2		\\server\IRIX\6.5\IRIX_6_5_Foundation_2\dist			love.65.found2
+love.all.3264.65.devfound	\\server\IRIX\6.5\IRIX_6_5_Development_Foundation\dist\dist6.5	love.65.devfound
+love.all.3264.65.devlib		\\server\IRIX\6.5\IRIX_6_5_Development_Libraries\dist		love.65.devlib
+love.all.3264.65.appsjune1998	\\server\IRIX\6.5\IRIX_6_5_Applications_June_1998\dist		love.65.appsjune1998
+love.all.3264.65.nfs3		\\server\IRIX\6.5\ONC3_NFS_Version_3\dist6.5			love.65.nfs3
+love.all.3264.65.freeware1998	\\server\IRIX\6.5\Freeware_1998\dist				love.65.freeware1998
+
+# Overlays IRIX 6.5.7
+love.indigo2.32.657.ov1		\\server\IRIX\6.5.7\Overlays_1_of_2\dist			love.657.1
+love.indigo2.32.657.ov2		\\server\IRIX\6.5.7\Overlays_2_of_2\dist			love.657.2
+
+# Overlays IRIX 6.5.22
+love.all.3264.6522.ov1		\\server\IRIX\6.5.22\Overlays_1_of_3\dist			love.6522.1
+love.all.3264.6522.ov2		\\server\IRIX\6.5.22\Overlays_2_of_3\dist			love.6522.2
+love.all.3264.6522.ov3		\\server\IRIX\6.5.22\Overlays_3_of_3\dist			love.6522.3
+
+# Overlays IRIX 6.5.30 (Windows paths)
+love.all.3264.6530.ov1		\\server\IRIX\6.5.30\Overlays_1_of_3\dist			love.6530.1
+love.all.3264.6530.ov2		\\server\IRIX\6.5.30\Overlays_2_of_3\dist			love.6530.2
+love.all.3264.6530.ov3		\\server\IRIX\6.5.30\Overlays_3_of_3\dist			love.6530.3
+love.all.3264.6530.apps		\\server\IRIX\6.5.30\Applications/dist				love.6530.apps
+love.all.3264.6530.capps	\\server\IRIX\6.5.30\Complementary_Applications\dist		love.6530.capps
+
+
+# ================================================================================================================
+# STANDALONE PROGRAM INVOCATION
+# ================================================================================================================
+# ----------------------------  ----------------------------					------------------
+# Fully qualified label name    Path to file                					Label name aliases
+# ----------------------------  ----------------------------					------------------
+love.all.32.53.fx		\\server\IRIX\5.3\stand\fx.ARCS					love.53.fx
+love.all.32.53.sash		\\server\IRIX\5.3\stand\sashARCS				love.53.sash
+
+love.all.32.60.fx		\\server\IRIX\6.0\stand\fx.ARCS					love.60.fx
+love.all.64.60.fx		\\server\IRIX\6.0\stand\fx.64					love.60.fx64
+love.all.32.60.sash		\\server\IRIX\6.0\stand\sashARCS				love.60.sash
+love.all.64.60.sash		\\server\IRIX\6.0\stand\sash64					love.60.sash64
+
+love.all.32.61.fx		\\server\IRIX\6.1\stand\fx.ARCS					love.61.fx
+love.all.64.61.fx		\\server\IRIX\6.1\stand\fx.64					love.61.fx64
+love.all.32.61.sash		\\server\IRIX\6.1\stand\sashARCS				love.61.sash
+love.all.64.61.sash		\\server\IRIX\6.1\stand\sash64					love.61.sash64
+
+love.all.32.62.fx		\\server\IRIX\6.2\stand\fx.ARCS					love.62.fx
+love.all.64.62.fx		\\server\IRIX\6.2\stand\fx.64					love.62.fx64
+love.all.32.62.sash		\\server\IRIX\6.2\stand\sashARCS				love.62.sash
+love.all.64.62.sash		\\server\IRIX\6.2\stand\sash64					love.62.sash64
+
+love.all.32.63.fx		\\server\IRIX\6.3\stand\fx.ARCS					love.63.fx
+love.all.64.63.fx		\\server\IRIX\6.3\stand\fx.64					love.63.fx64
+love.all.32.63.sash		\\server\IRIX\6.3\stand\sashARCS				love.63.sash
+love.all.64.63.sash		\\server\IRIX\6.3\stand\sash64					love.63.sash64
+
+love.all.32.64.fx		\\server\IRIX\6.4\stand\fx.ARCS					love.64.fx
+love.all.64.64.fx		\\server\IRIX\6.4\stand\fx.64					love.64.fx64
+love.all.32.64.sash		\\server\IRIX\6.4\stand\sashARCS				love.64.sash
+love.all.64.64.sash		\\server\IRIX\6.4\stand\sash64					love.64.sash64
+
+love.all.32.657.fx		\\server\IRIX\6.5.7\Overlays_1_of_2\stand\fx.ARCS		love.657.fx
+love.all.64.657.fx		\\server\IRIX\6.5.7\Overlays_1_of_2\stand\fx.64			love.657.fx64
+love.all.32.657.sash		\\server\IRIX\6.5.7\Overlays_1_of_2\stand\sashARCS		love.657.sash
+love.all.64.657.sash		\\server\IRIX\6.5.7\Overlays_1_of_2\stand\sash64		love.657.sash64
+
+love.all.32.6522.fx		\\server\IRIX\6.5.22\Overlays_1_of_3\stand\fx.ARCS		love.6522.fx
+love.all.64.6522.fx		\\server\IRIX\6.5.22\Overlays_1_of_3\stand\fx.64		love.6522.fx64
+love.all.32.6522.sash		\\server\IRIX\6.5.22\Overlays_1_of_3\stand\sashARCS		love.6522.sash
+love.all.64.6522.sash		\\server\IRIX\6.5.22\Overlays_1_of_3\stand\sash64		love.6522.sash64
+
+love.all.32.6530.fx		\\server\IRIX\6.5.30\Overlays_1_of_3\stand\fx.ARCS		love.6530.fx
+love.all.64.6530.fx		\\server\IRIX\6.5.30\Overlays_1_of_3\stand\fx.64		love.6530.fx64
+love.all.32.6530.sash		\\server\IRIX\6.5.30\Overlays_1_of_3\stand\sashARCS		love.6530.sash
+love.all.64.6530.sash		\\server\IRIX\6.5.30\Overlays_1_of_3\stand\sash64		love.6530.sash64
+

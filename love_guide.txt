@@ -1,0 +1,545 @@
+LOVE installer - Guide to installing IRIX
+-----------------------------------------
+
+
+0. Preinstallation tasks
+0.0 Terminology
+
+Installation server: The computer running the love installer
+Client: An SGI computer that installs IRIX remotely from an installation server
+
+0.1 Check supported OS versions
+
+Installation server:
+
+Windows 10, 11
+IRIX 6.5.22+
+Linux distributions with kernels starting from version 2.2
+
+
+Client:
+
+Any SGI computer with a network interface and support for remote software installations (the PROM menu must show the option "Install System Software").
+
+0.1.1 If you are on Windows, install Npcap 1.72
+
+0.2 Connect the installation server and the client to the same network segment (connect to the same switch)
+
+NOTE: Fictional IP addresses
+
+For the purpose of examplifying the installation process, the following fictional IP addresses will be used:
+
+Installation server: 192.168.178.100
+Client: 192.168.178.101
+
+0.3 Terminate all bootp (UDP 67), tftp (UDP 69) and rshd (TCP 514) servers running on any computer on this same network segment
+
+0.4 On Windows, configure Windows Defender Firewall to allow the following ports to be used by love.exe:
+
+UDP 67 - Incoming
+UDP 69 - Incoming
+TCP 514 - Incoming
+Any outgoing TCP connection from love.exe
+
+For details on how to configure Windows Defender Firewall, please consult material on the internet.
+
+Alternatively, you could temporarily disable the Windows Defender Firewall for the local network during the installation.
+
+0.5 Format the disk on your client machine for a cold install
+
+NOTE: Cold install vs. warm install
+
+A cold install is done when a disk is formatted with an SGI label and does not contain any previous IRIX installation. In this
+case, the installation places a new IRIX on the disk based on the installation media and user selections.
+
+A warm install is done when the disk already contains an IRIX installation, but the user wishes to install another release on top or
+reinstall some parts of it for any reason. In this case, the installation makes use to some extent of the preinstalled IRIX.
+
+A cold install is preferrable because it reinstalls IRIX from scratch, without any leftovers, errors or data corruption from previous IRIX installations.
+
+The steps outlined in this guide apply to a cold install. 
+
+
+0.5.0 Download the love binary for archlinux, debian, ubuntu, irix, or windows
+
+0.5.1 Start the love installer
+
+Start the love installer on the installation server:
+
+UNIX (terminal/console):
+
+# ./love 192.168.178.100 ./LABELS.UNIX.TXT
+
+WINDOWS (command prompt):
+
+C:\path\to\love\exe>.\love.exe 192.168.178.100 .\LABELS.WIN.TXT
+
+0.5.2 Power-on the client
+
+If asked to "Stop for maintenance" in a button on the bottom right, click it.
+
+If you didn't make it and it loads IRIX, wait for it to load completely, open a shell as root and enter:
+
+# shutdown -y -g0 -i0
+
+
+In both cases you will be brought to the PROM menu.
+
+
+0.5.3 Run fx to format the disk
+
+fx is SGI's application to format and partition disk drives. You can load the fx binary from the PROM command monitor.
+
+Choose the PROM option "Enter Command Monitor" and type the following 3 commands:
+
+>> unsetenv srvaddr
+>> setenv netaddr 192.168.178.101
+>> boot -f bootp()192.168.178.100:love.6530.fx
+
+The fx binary loads and greets you with some questions.
+
+Enter y or yes to the first question asked, the rest can be skipped with just pressing enter.
+
+
+NOTE: fx versions
+
+You could load any fx version with an entry in the labels file:
+
+love.all.32.53.fx		\\server\IRIX\5.3\stand\fx.ARCS					love.53.fx
+...
+love.all.32.60.fx		\\server\IRIX\6.0\stand\fx.ARCS					love.60.fx
+love.all.64.60.fx		\\server\IRIX\6.0\stand\fx.64					love.60.fx64
+
+...
+
+love.all.32.6522.fx		\\server\IRIX\6.5.22\Overlays_1_of_3\stand\fx.ARCS		love.6522.fx
+love.all.64.6522.fx		\\server\IRIX\6.5.22\Overlays_1_of_3\stand\fx.64		love.6522.fx64
+...
+love.all.32.6530.fx		\\server\IRIX\6.5.30\Overlays_1_of_3\stand\fx.ARCS		love.6530.fx
+love.all.64.6530.fx		\\server\IRIX\6.5.30\Overlays_1_of_3\stand\fx.64		love.6530.fx64
+
+
+Keep in mind, however, that older fx versions do not recognize certain disks, so it is safe to always load the latest 6.5.30 version.
+
+
+0.5.4 Format the disk
+
+
+NOTE: Slow vs. fast format
+
+There are two methods for formatting a disk: the official but slow, and the unofficial but fast methods.
+
+
+0.5.4.0 Official but slow format
+0.5.4.0.0 Automatically format the disk
+
+Type a or auto at the fx prompt to format the disk and wait until it finishes. This process literally wipes the disk sector by sector, so it is very slow.
+
+For a 2.5GiB SCSI disk on an R4.4k Indigo2 it takes approximately 2 hours.
+
+
+0.5.4.1 Unofficial but fast format
+
+This method distinguishes between new and old disks.
+
+If you are sure that your disk does not contain any previous IRIX installation, then it is a "new" disk. Otherwise, it is an "old" disk.
+
+0.5.4.1.0 Fast format of a "new" disk
+
+Type a or auto at the fx prompt to format the disk and wait 10 seconds. Then press Ctrl-C and you're done!
+
+Your new disk is now ready for installing IRIX. Proceed to step 0.5.5.
+
+0.5.4.1.1 Fast format of an "old" disk
+
+If you have an "old" disk, a previous IRIX installation is found on the disk along with the default partitions and filesystems. First, check the type of the filesystem of the disk's root partition. It must by one
+of EFS or XFS. You can display filesystem types using the label command:
+
+Type l or label, then sh or show, then a or all and look closely at the output. Write down the type of the filesystem and the starting block offset for the root partition (partition 0). For example, for the
+following EFS root partition:
+
+part type       cyls            blocks                Megabytes
+  0: efs	3 + 48		3183 + 50928          2 + 25
+
+You would write down EFS and 3183.
+
+
+Go back to the top menu in fx by typing repeatedly .. (double dots).
+
+
+Type d or debug to enter the debug submenu. 
+
+Proceed acording to the filesystem type of your root partition.
+
+EFS:
+
+fx/debug> seek (press enter)
+fx/debug/seek: blocknum = ((0)) 3183 (press enter)
+...
+fx/debug> readbuf (press enter)
+fx/debug/readbuf: buf offset = (0) (press enter)
+fx/debug/readbuf: nblocks = ((1)) 2 (press enter)
+...
+fx/debug> editbuf (press enter)
+fx/debug/editbuf: itype = (bytes) (press enter)
+fx/debug/editbuf: buf offset = (0) 512 (press enter)
+fx/debug/editbuf: value = (0) (press enter)
+fx/debug/editbuf: value = (0) (press enter)
+fx/debug/editbuf: value = (198) (press enter)
+...
+fx/debug/editbuf: value = (7) 0 (on the first 7 that appears, enter 0 and press enter)
+Press Ctrl-C
+...
+fx/debug> writebuf
+fx/debug/writebuf: buf offset = (512) 0 (press enter)
+fx/debug/writebuf: nblocks = ((2)) (press enter)
+
+Your old disk is now ready for installing IRIX.
+
+XFS:
+
+fx/debug> seek (press enter)
+fx/debug/seek: blocknum = ((0)) 3183 (press enter)
+...
+fx/debug> readbuf (press enter)
+fx/debug/readbuf: buf offset = (0) (press enter)
+fx/debug/readbuf: nblocks = ((1)) (press enter)
+...
+fx/debug> editbuf (press enter)
+fx/debug/editbuf: itype = (bytes) (press enter)
+fx/debug/editbuf: buf offset = (0) (press enter)
+fx/debug/editbuf: value = (120) 0 (press enter)
+Press Ctrl-C
+...
+fx/debug> writebuf
+fx/debug/writebuf: buf offset = (512) 0 (press enter)
+fx/debug/writebuf: nblocks = ((1)) (press enter)
+
+Your old disk is now ready for installing IRIX.
+
+
+NOTE: Rationale
+
+The above fast methods have the same practical effect than formatting the entire disk. The difference is that it takes no more than 5 minutes, in contrast to upto 6 hours.
+
+It works because the IRIX installer, inst, only looks at the filesystem signatures on the disk partitions. It does not care if the disk was "wiped" clean (everything set to zero or similar).
+
+
+0.5.5 Exit fx
+
+Go back to the top menu in fx by typing repeatedly .. (double dots).
+
+Type exi or exit and press enter. At this point the system returns to the PROM menu from where you can proceed to the installation of IRIX.
+
+
+1. Download the IRIX distribution files
+1.0 Unzip and untar IRIX distribution files to a directory of your choice (use 7z on Windows for unzipping/untarring)
+1.1 How to compile love.cxx
+
+If you want to compile love yourself, first get the source code love.cxx.
+
+On Linux:
+
+# AARCH
+g++ -std=c++98 -mabi=lp64 -o love love.cxx -lpthread
+
+# AMD64
+g++ -std=c++98 -m64 -o love love.cxx -lpthread
+
+
+On IRIX:
+
+# CC -o love love.cxx -lpthread
+
+On Windows:
+
+Create a new project in Visual Studio called love and a new file called love.cxx. Copy love's source code into love.cxx in your project. Use a x86 target (32-bit binary), add the Npcap libraries to the link paths
+and compile (Ctrl+B). If you want to play with the icon, download the *.ico from where you got the love.cxx file.
+
+
+2. Adjust paths in LABELS.UNIX.TXT or LABELS.WIN.TXT
+
+UNIX:
+
+If you have the IRIX distribution files in /usr/people/root/IRIX, write the following labels:
+
+love.all.3264.6530.ov1		/usr/people/root/IRIX/6.5.30/Overlays_1_of_3/dist			love.6530.1
+love.all.3264.6530.ov2		/usr/people/root/IRIX/6.5.30/Overlays_2_of_3/dist			love.6530.2
+love.all.3264.6530.ov3		/usr/people/root/IRIX/6.5.30/Overlays_3_of_3/dist			love.6530.3
+love.all.3264.6530.apps		/usr/people/root/IRIX/6.5.30/Applications/dist				love.6530.apps
+love.all.3264.6530.capps	/usr/people/root/IRIX/6.5.30/Complementary_Applications/dist		love.6530.capps
+
+
+WINDOWS:
+
+If you have the IRIX distribution files in C:\IRIX, write the following labels:
+
+love.all.3264.6530.ov1		C:\IRIX\6.5.30\Overlays_1_of_3\dist					love.6530.1
+love.all.3264.6530.ov2		C:\IRIX\6.5.30\Overlays_2_of_3\dist					love.6530.2
+love.all.3264.6530.ov3		C:\IRIX\6.5.30\Overlays_3_of_3\dist					love.6530.3
+love.all.3264.6530.apps		C:\IRIX\6.5.30\Applications\dist					love.6530.apps
+love.all.3264.6530.capps	C:\IRIX\6.5.30\Complementary_Applications\dist				love.6530.capps
+
+
+NOTE: Labels
+
+You can choose whatever labels you want! The only requirement is that it must start with the word love. So, if you plan to install for example IRIX 6.5.30 on 10 machines, use short aliases to write it faster:
+
+love.all.3264.6530.ov1		/usr/people/root/IRIX/6.5.30/Overlays_1_of_3/dist			love.1
+love.all.3264.6530.ov2		/usr/people/root/IRIX/6.5.30/Overlays_2_of_3/dist			love.2
+love.all.3264.6530.ov3		/usr/people/root/IRIX/6.5.30/Overlays_3_of_3/dist			love.3
+love.all.3264.6530.apps		/usr/people/root/IRIX/6.5.30/Applications/dist				love.4
+love.all.3264.6530.capps	/usr/people/root/IRIX/6.5.30/Complementary_Applications/dist		love.5
+
+
+3. Start installation from the SGI machine
+3.0 Choose "Install System Software" in the PROM menu
+3.1 Enter the IP address of the server
+
+Enter the name of the remote host: 192.168.178.100
+
+3.2 Enter the label of the IRIX distribution you wish to install, for example:
+
+For IRIX 5.3:
+
+Enter the remote directory: love.53
+
+For IRIX 6.5.30:
+
+Enter the remote directory: love.6530.1
+
+For any other IRIX release, consult the corresponding label in LABELS.WIN.TXT or LABELS.UNIX.TXT.
+
+3.3 Start installation by hitting the "Install" button or just press "Enter" if you are connected through a console
+
+
+4. Miniroot
+4.0 Enter filesystem information as needed
+
+NOTE: EFS vs. XFS
+
+IRIX supports two main filesystems: EFS (older) and XFS (newer).
+
+As a rule of thumb, use EFS for disks of 18GB or less, otherwise use XFS.
+
+EFS always uses block sizes of 512 bytes, XFS supports both 512 bytes or 4096 bytes.
+
+4.0.0 Enter block size
+
+If you want to use EFS, you must use 512 bytes block. If you want to use XFS, choose any one of 512 or 4096.
+
+4.0.1 Choose filesystem type (not on all IRIX versions):
+
+Choose EFS or XFS.
+
+4.0.2 Whenever it asks if you want to create a new filesystem on the disk answer with y or yes
+
+4.1 Enter network information
+
+4.1.0 Enter a hostname for your SGI machine
+4.1.1 Reenter the IP address of the client: 192.168.178.101
+4.1.2 Confirm the netmask (by default 0xffffff00)
+
+
+5. Wait until miniroot inst gets invoked
+
+NOTE: Inst is the actual installer for IRIX
+
+The next steps assume inst has fully loaded and its menu is displayed on screen, along with its prompt:
+
+Inst> 
+
+Proceed to the next step if you want to install IRIX previous to 6.5, or goto step 13. to install IRIX 6.5.X.
+
+
+6. How to install IRIX 5.3, 6.0, 6.1, 6.2, 6.3, 6.4
+6.0 Choose open
+
+Enter the IP:path combination that is shown. You could also just press enter if it is already filled in. Remember that the love installer does not use paths, but labels!
+
+For example:
+
+For IRIX 5.3:
+
+192.168.178.100:love.53 (press enter)
+
+For IRIX 6.0:
+
+192.168.178.100:love.60 (press enter)
+
+For IRIX 6.1:
+
+192.168.178.100:love.61 (press enter)
+
+For IRIX 6.2:
+
+192.168.178.100:love.62 (press enter)
+
+For IRIX 6.3:
+
+192.168.178.100:love.63 (press enter)
+
+For IRIX 6.4:
+
+192.168.178.100:love.64 (press enter)
+
+6.1 Type done and wait for Inst> prompt
+6.2 Start installation
+
+Choose go and press enter.
+
+Installation starts and will take some time, depending on your hardware and IRIX release.
+
+6.3 When finished, goto step 15 below
+
+
+7. How to install IRIX 6.5.X:
+
+NOTE: Base vs. overlays vs. companion CDs
+
+Starting with IRIX 6.5, the OS is distributed as a 6.5 base system, like
+5.3, 6.0, 6.1, 6.2, 6.3 and 6.4. But in addition to this 6.5 base system,
+so called intermediate releases are available, which are installed on top
+of the 6.5 base system:
+
+6.5 + Intermediate release (6.5.X)
+
+Intermediate releases, 6.5.X, go from 6.5.1 to 6.5.30 and are cumulative, which means that
+any intermediate release contains everything released in all prior intermediate releases:
+
+(((((6.5.1) 6.5.2) 6.5.3) 6.5.4) ... 6.5.30)
+
+So, for example, intermediate release 6.5.10 contains everything released in 6.5.9,
+6.5.8, 6.5.7, 6.5.6, 6.5.5, 6.5.4, 6.5.3, 6.5.2 and 6.5.1.
+
+Therefore, a full installation of IRIX 6.5.30 (base system 6.5 plus intermediate 6.5.30) would consist of:
+
+6.5 base system + (((((6.5.1) 6.5.2) 6.5.3) 6.5.4) ... 6.5.30) intermediate release
+
+Intermediate releases are also called Overlays and come in 1, 2 or 3 CDs, conveniently numbered from 1 to 3.
+
+For installation purposes, you always start with the Overlays CD 1 because it is this CD which contains
+the necessary installation tools. This is also why the label love.6530.1 was used above (the trailing .1
+stands for Overlays CD 1, see labels file).
+
+You may have noticed that the IRIX 6.5 base system comes with a bunch of CDs, some of which were released
+many years ago. For example, the application CD bundled with my original 6.5 base system release dates from
+June 1998. Years later, there were some CDs released that replaced or complemented some of these old base system CDs.
+
+This is where companion CDs come into play. A companion CD is either a rerelease of a previous 6.5 base
+system CD, which it replaces entirely (for example, IRIX 6.5 Applications CD, August 2006 which replaces my
+old IRIX 6.5 Applications CD, June 1998) or a new CD that complements some other CDs (for example,
+IRIX 6.5 Complementary Applications CD, August 2006) which complements both 6.5.30 Overlays CDs and the
+6.5 base system applications CD.
+
+To get a full 6.5.30 installation, all of them should be loaded and installed.
+
+
+NOTE: Maintenance vs. feature streams
+
+All intermediate releases upto 6.5.22 (excluding 6.5.1), include two installation profiles, which select certain
+packages for your IRIX installation. These profiles are called maintenance stream and feature stream.
+
+The maintenance stream includes those packages that focus on hardware. If you install IRIX using this profile, no new
+software feature will be installed nor enabled.
+
+The feature stream is a superset of the maintenance stream and includes all its packages plus all others that install and
+enable new software feature.
+
+It is almost always advisable to choose the feature stream for IRIX installations targeted to a casual or hobbyist use.
+
+The stream to be used must be selected when loading the first Overlay CD.
+
+
+Overall, the procedure to install a complete IRIX 6.5.30 from inst would be:
+
+First, load all Overlays CDs:
+
+love.6530.1 (select feature stream when asked for)
+love.6530.2
+love.6530.3
+
+Then, load all companion CDs:
+
+love.6530.apps
+love.6530.capps
+
+Finally, load the 6.5 base system CDs:
+
+love.65.found1
+love.65.found2
+love.65.devfound
+love.65.devlib
+love.65.appsjune1998
+love.65.nfs3
+
+Resolve conflicts and start the installation.
+
+Let's go through these steps, one by one.
+
+7.0 Choose open
+
+Enter the IP:path combinations for your IRIX release:
+
+192.168.178.100:love.6530.1 (press enter and select feature stream when asked for)
+
+Repeat open for all other overlays CDs:
+
+192.168.178.100:love.6530.2 (press enter)
+192.168.178.100:love.6530.3 (press enter)
+
+
+Repeat open for all companion CDs:
+
+192.168.178.100:love.6530.apps (press enter)
+192.168.178.100:love.6530.capps (press enter)
+
+
+And repeat open for all 6.5 base system CDs:
+
+192.168.178.100:love.65.found1 (press enter)
+192.168.178.100:love.65.found2 (press enter)
+192.168.178.100:love.65.devfound (press enter)
+192.168.178.100:love.65.devlib (press enter)
+192.168.178.100:love.65.appsjune1998 (press enter)
+192.168.178.100:love.65.nfs3 (press enter)
+
+
+7.1 Type done and wait for Inst> prompt
+7.2 Resolve conflicts
+
+Type the following:
+
+conflict 
+
+There should be exactly 4 conflicts, with choices: 1a, 1b, 2a, 2b, 2c, 3a, 3b, 4a, 4b, 4c
+
+Then, type in the following choices:
+
+conflict 1b 2b 3a 4b
+
+One more conflict should be displayed. Type:
+
+conflict 1a
+
+The message "No conflicts" should appear. If it does not, reread the steps above and try to figure out what went wrong.
+
+Note also that the above conflict resolution steps are applicable to 6.5.30. Other overlays may need different conflict resolution steps.
+
+7.3. Start installation
+
+Choose go and press enter.
+
+Installation starts and will take some time, depending on your hardware and IRIX release.
+
+7.4. Finish installation
+
+Choose quit and press enter. Answer y or yes when asked if you really want to quit or restart.
+
+A final process called "ELF requickstarting" will take place, which takes some time to finish but optimizes executables and DSOs to load faster thereafter.
+
+When this is finished, restart the system and enjoy your new IRIX installation.
+
+
+8. Done!
+

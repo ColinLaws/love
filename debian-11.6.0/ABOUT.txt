@@ -1,0 +1,15 @@
+Debian 11.6.0
+=============
+
+# uname -a
+Linux debian-11-6-0 5.10.0-21-amd64 #1 SMP Debian 5.10.162-1 (2023-01-21) x86_64 GNU/Linux
+#
+
+# g++-10 --version
+g++-10 (Debian 10.2.1-6) 10.2.1 20210110
+Copyright (C) 2020 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+#
+

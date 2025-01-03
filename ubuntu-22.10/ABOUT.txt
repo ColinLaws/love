@@ -1,0 +1,16 @@
+Ubuntu Server 22.10
+===================
+
+
+# uname -a
+Linux ubuntu-22-10 5.19.0-29-generic #30-Ubuntu SMP PREEMPT_DYNAMIC Wed Jan 4 12:14:09 UTC 2023 x86_64 x86_64 x86_64 GNU/Linux
+#
+
+# g++-10 --version
+g++-10 (Ubuntu 10.4.0-5ubuntu2) 10.4.0
+Copyright (C) 2020 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+#
+

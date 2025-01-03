@@ -1,0 +1,15 @@
+ARCH Linux 6.1.8
+================
+
+# uname -a
+Linux ARCH6010 6.1.8-arch1-1 #1 SMP PREEMPT_DYNAMIC Tue, 24 Jan 2023 21:07:04 +0000 x86_64 GNU/Linux
+#
+
+# g++-10 --version
+g++ (GCC) 12.2.1 20230111
+Copyright (C) 2022 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+#
+
